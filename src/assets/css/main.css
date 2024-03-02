@@ -1,0 +1,33 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html {
+  @apply h-full;
+}
+
+body {
+  @apply h-full overflow-hidden bg-slate-50 font-sans text-gray-900 antialiased;
+}
+
+div#__nuxt {
+  @apply h-full;
+}
+
+form {
+  margin-block-end: 0;
+}
+
+input:-webkit-autofill {
+  -webkit-text-fill-color: theme("colors.gray.800") !important;
+}
+
+@layer base {
+  input[type="number"]::-webkit-outer-spin-button,
+  input[type="number"]::-webkit-inner-spin-button,
+  input[type="number"] {
+    -webkit-appearance: none;
+    margin: 0;
+    -moz-appearance: textfield !important;
+  }
+}

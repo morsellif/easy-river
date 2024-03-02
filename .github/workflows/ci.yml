@@ -1,0 +1,53 @@
+name: "CI"
+
+on:
+  pull_request:
+    branches: [main]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.ref != 'refs/heads/master' }}
+
+jobs:
+  prettier:
+    name: Prettier check
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+      - name: Setup
+        uses: ./gh-actions/setup
+      - name: Prettier
+        run: bun prettier:check
+
+  eslint:
+    name: Eslint
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+      - name: Setup
+        uses: ./gh-actions/setup
+      - name: ESLint
+        run: bun lint
+
+  typecheck:
+    name: Typecheck
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+      - name: Setup
+        uses: ./gh-actions/setup
+      - name: TypeScript
+        run: bun typecheck
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+      - name: Setup
+        uses: ./gh-actions/setup
+      - name: Build
+        run: bun build
