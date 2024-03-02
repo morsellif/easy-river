@@ -15,7 +15,8 @@
     "lint": "eslint --ext .ts,.js,.vue,.tsx --ignore-path .gitignore . --fix",
     "prettier": "prettier --write \"./src/**/*.{ts,tsx,js,vue}\"",
     "prettier:check": "prettier --check \"./src/**/*.{ts,tsx,js,vue}\"",
-    "prepare": "husky"
+    "prepare": "husky",
+    "vercel-build": "NODE_ENV=production nuxt build"
   },
   "devDependencies": {
     "@nuxtjs/eslint-config-typescript": "^12.1.0",
