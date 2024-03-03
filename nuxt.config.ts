@@ -11,4 +11,9 @@ export default defineNuxtConfig({
   },
   ssr: true,
   devtools: { enabled: true },
+  typescript: {
+    tsConfig: {
+      include: ['types/*.d.ts'],
+    },
+  },
 });
