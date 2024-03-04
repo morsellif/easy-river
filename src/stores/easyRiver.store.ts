@@ -1,13 +1,13 @@
 import { defineStore } from 'pinia';
 
 interface State {
-  bookmarks: Bookmark[];
+  bookmarks: Ref<Bookmark[]>;
 }
 
 export const useEasyRiverStore = defineStore('easyRiver', {
   state: (): State => {
     return {
-      bookmarks: [],
+      bookmarks: useLocalStorage<Bookmark[]>('easyRiver/bookmarks', []),
     };
   },
   getters: {
