@@ -1,37 +1,38 @@
 <script setup lang="ts">
-const bookmarked = ref(false);
+defineProps<{
+  idstazione: string;
+}>();
 
-const bookmark = () => {
-  bookmarked.value = true;
-};
-
-const removeBookmark = () => {
-  bookmarked.value = false;
-};
+const easyRiverStore = useEasyRiverStore();
+const { isBookmarked } = storeToRefs(easyRiverStore);
 </script>
 
 <template>
   <div class="group cursor-pointer flex-row p-3">
-    <div class="group/add">
+    <div
+      class="group/add"
+      @click="easyRiverStore.addBookmark(idstazione)"
+    >
       <IconsBookmarkAdd
-        v-if="!bookmarked"
+        v-if="!isBookmarked(idstazione)"
         class="block fill-blue-600 group-hover/add:hidden"
-        @click="bookmark"
       />
       <IconsBookmarkAddFilled
-        v-if="!bookmarked"
+        v-if="!isBookmarked(idstazione)"
         class="hidden fill-blue-600 group-hover/add:block"
-        @click="bookmark"
       />
     </div>
-    <div class="group/remove">
+    <div
+      class="group/remove"
+      @click="easyRiverStore.removeBookmark(idstazione)"
+    >
       <IconsBookmarkFilled
-        v-if="bookmarked"
+        v-if="isBookmarked(idstazione)"
         class="block fill-blue-600 group-hover/remove:hidden"
       />
       <IconsBookmarkOffFilled
         class="hidden fill-blue-600 group-hover/remove:block"
-        @click="removeBookmark"
+        @click="isBookmarked(idstazione)"
       />
     </div>
   </div>
