@@ -39,7 +39,7 @@
     "vue/no-multiple-template-root": "off",
     "camelcase": "off",
 
-    "prettier/prettier": ["error", {}, { "usePrettierrc": true }]
+    "prettier/prettier": "error"
   },
   "parserOptions": {
     "parser": "@typescript-eslint/parser",
