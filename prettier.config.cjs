@@ -2,16 +2,16 @@
 
 /** @type { PrettierConfig | SortImportsConfig } */
 module.exports = {
-  arrowParens: "always",
+  arrowParens: 'always',
   semi: true,
   printWidth: 80,
   useTabs: false,
   tabWidth: 2,
-  trailingComma: "all",
+  trailingComma: 'all',
   singleQuote: true,
-  plugins: ["prettier-plugin-tailwindcss"],
-  tailwindConfig: "./tailwind.config.cjs",
+  plugins: ['prettier-plugin-tailwindcss'],
+  tailwindConfig: './tailwind.config.cjs',
   singleAttributePerLine: true,
-  htmlWhitespaceSensitivity: "ignore",
-  proseWrap: "always",
+  htmlWhitespaceSensitivity: 'ignore',
+  proseWrap: 'always',
 };
