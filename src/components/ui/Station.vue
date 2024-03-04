@@ -98,6 +98,7 @@ const cursorPercentage = (station: Station) => {
 <template>
   <div class="flex flex-col space-y-2 pb-4 pt-4">
     <div class="flex flex-row">
+      <UiBookmark :idstazione="station.idstazione" />
       <div class="flex-1 flex-row">
         <div class="text-sm">NOME</div>
         <div class="text-xl font-bold">{{ station.nomestaz }}</div>
