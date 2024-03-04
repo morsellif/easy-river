@@ -16,6 +16,9 @@ const config = {
       colors: {
         gray: colors.gray,
         brand: brandColor,
+        threshold1: colors.yellow['400'],
+        threshold2: colors.orange['500'],
+        threshold3: colors.red['600'],
       },
       ringColor: {
         default: brandColor['500'],
