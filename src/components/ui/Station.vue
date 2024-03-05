@@ -10,16 +10,16 @@ const hasThresholds = (station: Station) => {
 const threshold1 = (station: Station) => {
   return (
     hasThresholds(station) &&
-    station.value >= station.soglia1 &&
-    station.value < station.soglia2
+    station.value! >= station.soglia1 &&
+    station.value! < station.soglia2
   );
 };
 
 const threshold2 = (station: Station) => {
   return (
     hasThresholds(station) &&
-    station.value >= station.soglia2 &&
-    station.value < station.soglia3
+    station.value! >= station.soglia2 &&
+    station.value! < station.soglia3
   );
 };
 
@@ -27,7 +27,7 @@ const threshold3 = (station: Station) => {
   return (
     hasThresholds(station) &&
     station.soglia3 !== 0 &&
-    station.value >= station.soglia3
+    station.value! >= station.soglia3
   );
 };
 
@@ -62,12 +62,12 @@ const cursorPercentage = (station: Station) => {
     lowerLimit = station.soglia1;
     upperLimit = 100 * (100 / station.soglia1);
     absoluteUpperLimit = 100;
-  } else if (station.value < station.soglia2) {
+  } else if (station.value! < station.soglia2) {
     // if the current level is below `soglia2`
     lowerLimit = station.soglia1;
     upperLimit = station.soglia2;
     absoluteUpperLimit = limitSoglia;
-  } else if (station.value < station.soglia3) {
+  } else if (station.value! < station.soglia3) {
     // if the current level is below `soglia3`
     lowerLimit = station.soglia2;
     upperLimit = station.soglia3;
@@ -82,7 +82,7 @@ const cursorPercentage = (station: Station) => {
   }
 
   const relativePercentage = _relativePercentage(
-    station.value,
+    station.value!,
     lowerLimit,
     upperLimit,
   );
@@ -104,6 +104,7 @@ const cursorPercentage = (station: Station) => {
         <div class="text-xl font-bold">{{ station.nomestaz }}</div>
       </div>
       <div
+        v-if="station.value !== null"
         :class="[
           threshold1(station) ? 'text-threshold1' : '',
           threshold2(station) ? 'text-threshold2' : '',
@@ -115,12 +116,19 @@ const cursorPercentage = (station: Station) => {
       </div>
     </div>
     <UiThresholdBar
-      v-if="hasThresholds(station)"
+      v-if="hasThresholds(station) && station.value !== null"
       :percentage="cursorPercentage(station)"
       :threshold1="station.soglia1"
       :threshold2="station.soglia2"
       :threshold3="station.soglia3"
     />
+    <div
+      v-else-if="!station.value"
+      class="flex flex-1 flex-row space-x-2 self-center text-wrap fill-amber-500 align-middle font-bold text-amber-500"
+    >
+      <div><IconsWarning /></div>
+      <div>DATO NON DISPONIBILE</div>
+    </div>
     <div
       v-else
       class="flex"
