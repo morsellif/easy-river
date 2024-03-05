@@ -7,7 +7,7 @@ declare global {
     nomestaz: string;
     lon: string;
     lat: string;
-    value: number;
+    value: number | null;
     soglia1: number;
     soglia2: number;
     soglia3: number;
