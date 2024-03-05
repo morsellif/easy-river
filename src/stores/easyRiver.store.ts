@@ -25,6 +25,8 @@ export const useEasyRiverStore = defineStore('easyRiver', {
     },
     bookmarkCount: (state) => state.bookmarks.length,
     filterBookmarks: (state) => state.bookmarkFilter[0],
+    bookamrkSet: (state) =>
+      new Set(state.bookmarks.map((bookmark) => bookmark.idstazione)),
   },
   actions: {
     addBookmark(idstazione: string) {
