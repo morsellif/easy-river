@@ -34,12 +34,19 @@ const _fromEpochToDate = (time: Time) => {
 
   return date;
 };
+
+const store = useEasyRiverStore();
+const { filterBookmarks, bookamrkSet } = storeToRefs(store);
+
+const bookmarkedStations = computed(() =>
+  stations.value.filter((station) => bookamrkSet.value.has(station.idstazione)),
+);
 </script>
 
 <template>
   <client-only>
     <div class="container mx-auto h-full w-96">
-      <div class="h-full divide-y-2 overflow-y-scroll">
+      <div class="h-full space-y-2">
         <div
           class="flex space-x-3 rounded-full border border-green-300 bg-green-100 px-2 py-1"
         >
@@ -50,11 +57,30 @@ const _fromEpochToDate = (time: Time) => {
             {{ backInTime().toLocaleString('it-IT') }}
           </div>
         </div>
-        <UiStation
-          v-for="stat in stations"
-          :key="stat.idstazione"
-          :station="stat"
-        />
+        <UiBookmarkFilterButton />
+        <div
+          v-if="!filterBookmarks"
+          class="h-full divide-y-2 overflow-y-scroll"
+        >
+          <UiStation
+            v-for="stat in stations"
+            :key="stat.idstazione"
+            :station="stat"
+          />
+        </div>
+        <div
+          v-else
+          class="divide-y-2"
+        >
+          <div class="text-lg font-medium">Filtering for bookmarks</div>
+          <div class="h-full divide-y-2 overflow-y-scroll">
+            <UiStation
+              v-for="stat in bookmarkedStations"
+              :key="stat.idstazione"
+              :station="stat"
+            />
+          </div>
+        </div>
       </div>
     </div>
   </client-only>
