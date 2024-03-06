@@ -17,4 +17,10 @@ export default defineNuxtConfig({
       include: ['types/*.d.ts'],
     },
   },
+  app: {
+    head: {
+      charset: 'utf-8',
+      viewport: 'width=device-width, initial-scale=1.0, viewport-fit=cover',
+    },
+  },
 });
