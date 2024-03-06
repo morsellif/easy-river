@@ -37,6 +37,7 @@ const { y } = useScroll(el, {
         </div>
       </div>
     </div>
+    <UiSearchBar />
     <div
       ref="el"
       class="relative overflow-y-auto overflow-x-hidden"
@@ -45,7 +46,6 @@ const { y } = useScroll(el, {
         :class="[hidden ? 'hidden opacity-0' : 'opacity-100']"
         @click="y = 0"
       />
-      <UiSearchBar />
       <slot />
     </div>
   </div>
