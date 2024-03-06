@@ -6,10 +6,12 @@ interface State {
   bookmarkFilter: RemovableRef<boolean[]>;
   search: boolean;
   searchQuery: string;
+  disclamierAccepted: RemovableRef<boolean[]>;
 }
 
 const _bookmarksKey = 'easyRiver/bookmarks';
 const _bookmarkFilterKey = 'easyRiver/bookmarkFilter';
+const _disclamierAcceptedKey = 'easyRiver/disclamierAccepted';
 
 export const useEasyRiverStore = defineStore('easyRiver', {
   state: (): State => ({
@@ -17,10 +19,14 @@ export const useEasyRiverStore = defineStore('easyRiver', {
     bookmarkFilter: useLocalStorage(_bookmarkFilterKey, [false]),
     search: false,
     searchQuery: '',
+    disclamierAccepted: useLocalStorage(_disclamierAcceptedKey, [false]),
   }),
   hydrate(state, _initialState) {
     state.bookmarks = useLocalStorage<Bookmark[]>(_bookmarksKey, []).value;
     state.bookmarkFilter = useLocalStorage(_bookmarkFilterKey, [false]).value;
+    state.disclamierAccepted = useLocalStorage(_disclamierAcceptedKey, [
+      false,
+    ]).value;
   },
   getters: {
     isBookmarked: (state) => {
@@ -31,6 +37,7 @@ export const useEasyRiverStore = defineStore('easyRiver', {
     filterBookmarks: (state) => state.bookmarkFilter[0],
     bookamrkSet: (state) =>
       new Set(state.bookmarks.map((bookmark) => bookmark.idstazione)),
+    showDisclamier: (state) => !state.disclamierAccepted[0],
   },
   actions: {
     addBookmark(idstazione: string) {
@@ -48,6 +55,9 @@ export const useEasyRiverStore = defineStore('easyRiver', {
     },
     toggleSearch() {
       this.search = !this.search;
+    },
+    toggleDisclamier() {
+      this.disclamierAccepted[0] = !this.disclamierAccepted[0];
     },
   },
 });

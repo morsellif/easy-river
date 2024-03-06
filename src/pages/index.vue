@@ -55,6 +55,7 @@ const filteredStations = computed(() => {
   <UiContainer>
     <UiHeader />
     <client-only>
+      <UiDisclamier />
       <UiList
         v-if="filteredStations"
         :time="time?.time"
