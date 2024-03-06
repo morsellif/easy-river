@@ -2,16 +2,6 @@
 const time = ref<Time | null>(null);
 const stations = ref<Station[]>([]);
 
-const backInTime = () => {
-  const currentDate = new Date();
-  currentDate.setHours(currentDate.getHours() - 1);
-  currentDate.setMinutes(0);
-  currentDate.setSeconds(0);
-  currentDate.setMilliseconds(0);
-
-  return currentDate;
-};
-
 const { data } = useFetch<NoTimeResponse>('/api/stations');
 
 if (data) {
@@ -27,52 +17,57 @@ const _fromEpochToDate = (time: Time) => {
 };
 
 const store = useEasyRiverStore();
-const { filterBookmarks, bookamrkSet } = storeToRefs(store);
+const { filterBookmarks, bookamrkSet, search, searchQuery } =
+  storeToRefs(store);
 
-const bookmarkedStations = computed(() =>
-  stations.value.filter((station) => bookamrkSet.value.has(station.idstazione)),
-);
+const filteredStations = computed(() => {
+  if (filterBookmarks.value && search.value) {
+    return stations.value
+      .filter((station) => bookamrkSet.value.has(station.idstazione))
+      .filter((station) =>
+        station.nomestaz
+          .toLocaleLowerCase()
+          .includes(searchQuery.value.toLocaleLowerCase()),
+      );
+  } else if (filterBookmarks.value && !search.value) {
+    return stations.value.filter((station) =>
+      bookamrkSet.value.has(station.idstazione),
+    );
+  } else if (!filterBookmarks.value && search.value) {
+    return stations.value.filter((station) =>
+      station.nomestaz
+        .toLocaleLowerCase()
+        .includes(searchQuery.value.toLocaleLowerCase()),
+    );
+  } else {
+    return stations.value;
+  }
+
+  // return filterBookmarks.value
+  //   ? stations.value.filter((station) =>
+  //       bookamrkSet.value.has(station.idstazione),
+  //     )
+  //   : stations.value;
+});
 </script>
 
 <template>
-  <client-only>
-    <div class="container mx-auto h-full w-96">
-      <div class="h-full space-y-2">
-        <div
-          class="flex space-x-3 rounded-full border border-green-300 bg-green-100 px-2 py-1"
-        >
-          <div
-            class="ml-2 h-2 w-2 animate-ping self-center rounded-full bg-green-400"
-          ></div>
-          <div class="font-medium text-green-600">
-            {{ backInTime().toLocaleString('it-IT') }}
-          </div>
-        </div>
-        <UiBookmarkFilterButton />
-        <div
-          v-if="!filterBookmarks"
-          class="h-full divide-y-2 overflow-y-scroll"
-        >
-          <UiStation
-            v-for="stat in stations"
-            :key="stat.idstazione"
-            :station="stat"
-          />
-        </div>
-        <div
-          v-else
-          class="divide-y-2"
-        >
-          <div class="text-lg font-medium">Filtering for bookmarks</div>
-          <div class="h-full divide-y-2 overflow-y-scroll">
-            <UiStation
-              v-for="stat in bookmarkedStations"
-              :key="stat.idstazione"
-              :station="stat"
-            />
-          </div>
-        </div>
-      </div>
-    </div>
-  </client-only>
+  <UiContainer>
+    <UiHeader />
+    <client-only>
+      <UiList
+        v-if="filteredStations"
+        :time="time?.time"
+      >
+        <UiStation
+          v-for="stat in filteredStations.sort(
+            (a, b) => a.ordinamento - b.ordinamento,
+          )"
+          :key="stat.idstazione"
+          :station="stat"
+        />
+      </UiList>
+    </client-only>
+    <div class="h-[30px]"></div>
+  </UiContainer>
 </template>

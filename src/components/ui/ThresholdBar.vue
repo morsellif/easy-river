@@ -16,7 +16,7 @@ const cursorOffset = (percentage: number) => {
 </script>
 
 <template>
-  <div class="flex flex-1 flex-col">
+  <div class="flex flex-1 flex-col px-3">
     <div class="relative h-6 w-full overflow-hidden rounded-full">
       <div class="flex h-full w-full font-bold text-white">
         <div

@@ -96,12 +96,14 @@ const cursorPercentage = (station: Station) => {
 </script>
 
 <template>
-  <div class="flex flex-col space-y-2 pb-4 pt-4">
-    <div class="flex flex-row">
+  <div class="flex flex-col space-y-2 border-b border-gray-200 py-2">
+    <div class="flex flex-row pr-3">
       <UiBookmark :idstazione="station.idstazione" />
-      <div class="flex-1 flex-row">
-        <div class="text-sm">NOME</div>
-        <div class="text-xl font-bold">{{ station.nomestaz }}</div>
+      <div class="flex-1 flex-row self-center">
+        <div class="text-sm leading-none">NOME</div>
+        <div class="text-xl font-bold leading-none">
+          {{ station.nomestaz }}
+        </div>
       </div>
       <div
         v-if="station.value !== null"
@@ -109,7 +111,7 @@ const cursorPercentage = (station: Station) => {
           threshold1(station) ? 'text-threshold1' : '',
           threshold2(station) ? 'text-threshold2' : '',
           threshold3(station) ? 'text-threshold3' : '',
-          'text-3xl font-bold',
+          'self-center text-3xl font-bold',
         ]"
       >
         {{ station.value }} m
@@ -123,15 +125,22 @@ const cursorPercentage = (station: Station) => {
       :threshold3="station.soglia3"
     />
     <div
+      v-else-if="!hasThresholds(station) && station.value !== null"
+      class="flex h-12 flex-row items-center space-x-2 self-center text-wrap fill-green-500 align-middle font-bold text-green-500"
+    >
+      <div><IconsSlideText /></div>
+      <div>SOGLIE DI ALLERTA NON DISPONIBILI</div>
+    </div>
+    <div
       v-else-if="!station.value"
-      class="flex flex-1 flex-row space-x-2 self-center text-wrap fill-amber-500 align-middle font-bold text-amber-500"
+      class="flex h-12 flex-row items-center space-x-2 self-center text-wrap fill-amber-500 align-middle font-bold text-amber-500"
     >
       <div><IconsWarning /></div>
       <div>DATO NON DISPONIBILE</div>
     </div>
     <div
       v-else
-      class="flex"
+      class="h-12"
     >
       &nbsp;
     </div>
