@@ -12,16 +12,7 @@ const backInTime = () => {
   return currentDate;
 };
 
-const { data } = useFetch<NoTimeResponse>(
-  () =>
-    'https://allertameteo.regione.emilia-romagna.it/o/api/allerta/get-sensor-values-no-time',
-  {
-    query: {
-      variabile: '254,0,0/1,-,-,-/B13215',
-      time: backInTime().getTime(),
-    },
-  },
-);
+const { data } = useFetch<NoTimeResponse>('/api/stations');
 
 if (data) {
   time.value = data.value?.shift() as Time;
