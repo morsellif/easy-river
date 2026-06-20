@@ -21,25 +21,46 @@ export default withNuxt([
   },
   eslintPluginPrettierRecommended,
   {
-    files: ['**/*.ts', '**/*.tsx', '**/*.vue'],
+    files: ['**/*.ts', '**/*.tsx', '**/*.d.ts', '**/*.config.cjs'],
     plugins: {
-      // 2. Explicitly map the plugin namespace using the internal dependency
+      '@typescript-eslint': tseslint.plugin,
+    },
+    languageOptions: {
+      parser: tseslint.parser,
+      parserOptions: {
+        sourceType: 'module',
+        ecmaVersion: 'latest',
+      },
+    },
+    rules: {
+      'no-undef': 'off',
+      'no-unused-vars': 'off',
+      '@typescript-eslint/no-var-requires': 'off',
+      '@typescript-eslint/no-unused-vars': [
+        'error',
+        {
+          argsIgnorePattern: '^_',
+          varsIgnorePattern: '^_',
+          ignoreRestSiblings: true,
+        },
+      ],
+    },
+  },
+  {
+    files: ['**/*.vue'],
+    plugins: {
       '@typescript-eslint': tseslint.plugin,
     },
     languageOptions: {
       parserOptions: {
-        // 3. Ensure the parser understands TS inside this specific block
         parser: tseslint.parser,
+        sourceType: 'module',
+        ecmaVersion: 'latest',
       },
     },
     rules: {
-      // TypeScript Overrides
-      '@typescript-eslint/interface-name-prefix': 'off',
-      '@typescript-eslint/explicit-function-return-type': 'off',
-      '@typescript-eslint/explicit-module-boundary-types': 'off',
-      '@typescript-eslint/no-explicit-any': 'off',
-      '@typescript-eslint/no-non-null-assertion': 'off',
-      'no-use-before-define': 'off',
+      'no-undef': 'off',
+      'no-unused-vars': 'off',
       '@typescript-eslint/no-unused-vars': [
         'error',
         {
@@ -59,4 +80,3 @@ export default withNuxt([
     },
   },
 ]);
-// Your custom configs here
