@@ -1,6 +1,6 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
-  modules: ['@vueuse/nuxt', '@pinia/nuxt'],
+  modules: ['@vueuse/nuxt', '@pinia/nuxt', '@nuxt/eslint'],
   srcDir: './src/',
   css: ['~/assets/css/main.css'],
   postcss: {
