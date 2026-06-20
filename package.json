@@ -4,7 +4,6 @@
   "type": "module",
   "author": "Francesco Morselli <francesco.morselli@me.com>",
   "scripts": {
-    "preinstall": "npx only-allow bun",
     "test": "vitest",
     "build": "nuxt build",
     "dev": "nuxt dev",
