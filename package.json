@@ -11,7 +11,7 @@
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare",
     "typecheck": "nuxt typecheck",
-    "lint": "eslint --ext .ts,.js,.vue,.tsx --ignore-path .gitignore . --fix",
+    "lint": "eslint --ext .ts,.js,.vue,.tsx . --fix",
     "prettier": "prettier --write \"./src/**/*.{ts,tsx,js,vue}\"",
     "prettier:check": "prettier --check \"./src/**/*.{ts,tsx,js,vue}\"",
     "prepare": "husky",
