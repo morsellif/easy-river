@@ -23,4 +23,12 @@ export default defineNuxtConfig({
       viewport: 'width=device-width, initial-scale=1.0, viewport-fit=cover',
     },
   },
+  nitro: {
+    storage: {
+      cache: {
+        driver: 'cloudflare-kv-binding',
+        binding: 'KV_EASY-RIVER_CACHE_BUCKET',
+      },
+    },
+  },
 });
