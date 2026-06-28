@@ -7,8 +7,9 @@ const currentHourUTCEpoch = () => {
   if (currentDate.getMinutes() <= 30) {
     currentDate.setMinutes(30, 0, 0);
   } else {
-    addHours(currentDate, 1);
-    currentDate.setMinutes(0, 0, 0);
+    const nextHour = addHours(currentDate, 1);
+    nextHour.setMinutes(0, 0, 0);
+    return nextHour.getTime();
   }
 
   return currentDate.getTime();
