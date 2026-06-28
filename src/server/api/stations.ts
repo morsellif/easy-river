@@ -1,29 +1,44 @@
-import { addHours } from 'date-fns';
-
-import { redis, keyParser, isCaching } from './../../utils/redis';
+import { addHours, differenceInSeconds } from 'date-fns';
 
 const currentHourUTCEpoch = () => {
   const currentDate = new Date();
   if (currentDate.getMinutes() <= 30) {
     currentDate.setMinutes(30, 0, 0);
   } else {
-    addHours(currentDate, 1);
-    currentDate.setMinutes(0, 0, 0);
+    const nextHour = addHours(currentDate, 1);
+    nextHour.setMinutes(0, 0, 0);
+    return nextHour.getTime();
   }
 
   return currentDate.getTime();
 };
 
-export default defineEventHandler(async (_event) => {
-  // get the latest most complete stations data
-  const epoch = currentHourUTCEpoch().toString();
+// Helper to calculate exactly how many seconds are left until the next window
+const getSecondsUntilNextEpoch = () => {
+  const now = new Date();
+  const target = new Date();
 
-  const fromCache = isCaching()
-    ? await redis.get<string>(keyParser(epoch))
-    : null;
-  if (!fromCache) {
-    console.log('Data not found in cache...');
-    console.log('Fetching new data...');
+  if (now.getMinutes() <= 30) {
+    // If we are before XX:30, the current window ends at exactly XX:30
+    target.setMinutes(30, 0, 0);
+  } else {
+    // If we are past XX:30, the current window ends at the next hour XX:00
+    const nextHour = addHours(now, 1);
+    nextHour.setMinutes(0, 0, 0);
+    return differenceInSeconds(nextHour, now);
+  }
+
+  return differenceInSeconds(target, now);
+};
+
+export default defineCachedEventHandler(
+  async (event) => {
+    // get the latest most complete stations data
+    const epoch = currentHourUTCEpoch().toString();
+
+    const secondsLeft = Math.max(getSecondsUntilNextEpoch(), 1);
+    setResponseHeader(event, 'Cache-Control', `public, max-age=${secondsLeft}`);
+
     const data = await $fetch<NoTimeResponse>(
       'https://allertameteo.regione.emilia-romagna.it/o/api/allerta/get-sensor-values-no-time',
       {
@@ -40,19 +55,12 @@ export default defineEventHandler(async (_event) => {
       },
     );
 
-    if (isCaching()) {
-      // using transaction to optimize Redis server calls
-      const transaction = redis.multi();
-      transaction.set(keyParser(epoch), JSON.stringify(data));
-      transaction.expire(keyParser(epoch), 30 * 60);
-
-      console.log('Saving new data to cache...');
-      const _result = await transaction.exec();
-    }
-
     return data;
-  } else {
-    console.log('Data found in cache...');
-    return fromCache;
-  }
-});
+  },
+  {
+    name: 'emiliaRomagnaRiverSensorData',
+    getKey: () => currentHourUTCEpoch().toString(),
+    swr: false,
+    maxAge: 30 * 60,
+  },
+);
