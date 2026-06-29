@@ -24,7 +24,7 @@ export default defineNuxtConfig({
     },
   },
   nitro: {
-    preset: 'cloudflare-pages',
+    preset: 'cloudflare_module',
     storage: {
       cache: {
         driver: 'cloudflare-kv-binding',
