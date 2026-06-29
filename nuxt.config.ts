@@ -1,5 +1,6 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
+  compatibilityDate: '2026-06-29',
   modules: ['@vueuse/nuxt', '@pinia/nuxt', '@nuxt/eslint'],
   srcDir: './src/',
   css: ['~/assets/css/main.css'],

@@ -25,5 +25,5 @@ logs
 
 .eslintcache
 
-# Wrangler
+# Ignore Cloudflare Wrangler dev/build outputs
 .wrangler
