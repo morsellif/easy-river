@@ -24,3 +24,6 @@ logs
 !.env.example
 
 .eslintcache
+
+# Ignore Cloudflare Wrangler dev/build outputs
+.wrangler

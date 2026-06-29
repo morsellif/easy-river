@@ -1,9 +1,8 @@
 {
   "name": "easy-river",
   "pages_build_output_dir": "dist",
-  "compatibility_flags": [
-    "nodejs_compat"
-  ],
+  "compatibility_date": "2026-06-29",
+  "compatibility_flags": ["nodejs_compat"],
   "kv_namespaces": [
     {
       "binding": "KV_EASY-RIVER_CACHE_BUCKET",
